@@ -5,12 +5,24 @@ import java.util.Scanner;
 
 public class WordCount {
   static boolean caseInsensitive = false;
+  static boolean usePrefix = false;
+  static String prefix;
   
   //Checks if input line had " -i " anywhere
   public static void checkFlags(String[] input) {
     for (int i = 1; i < input.length; i++) {
       if (input[i].equals("-i"))
         caseInsensitive = true;
+      if (input[i].equals("-p")) {
+        usePrefix = true;
+        if (i + 1 >= input.length) {
+          System.out.println("A prefix must be specified after the -p flag");
+        }
+        else {
+          prefix = input[i+1];
+        }
+        
+      }
     }
   }
   
@@ -46,6 +58,17 @@ public class WordCount {
     }
   }
   
+  //Iterate through map and prints all words/counts with specified prefix
+  public static void printAllPrefix(Map<String, Integer> counts) {
+    for (Map.Entry<String, Integer> entry : counts.entrySet()) {
+      String word = entry.getKey();
+      Integer occurrences = entry.getValue();
+      //Checks for specified prefix
+      if (word.startsWith(prefix))
+          System.out.println(word + ", " + occurrences);
+      }
+  }
+  
   public static void main (String args[]) throws Exception {
     Scanner sc = new Scanner(System.in);
     System.out.println("Enter a file name");
@@ -66,7 +89,10 @@ public class WordCount {
       fileIn.close();
       
       //Print out counts
-      printResults(counts);
+      if (usePrefix)
+        printAllPrefix(counts);
+      else 
+        printResults(counts);
     }
     else {
       System.out.println(fileName + " is not a valid file. Exiting.");
