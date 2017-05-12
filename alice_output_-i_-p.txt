@@ -1,0 +1,7 @@
+Enter a file name
+D:\Wesley\Downloads\alice.txt -i -p hel
+helped, 1
+helpless, 1
+held, 4
+hell, 1
+help, 9
