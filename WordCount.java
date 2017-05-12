@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class WordCount {
@@ -8,15 +9,15 @@ public class WordCount {
   static boolean usePrefix = false;
   static String prefix;
   
-  //Checks if input line had " -i " anywhere
-  public static void checkFlags(String[] input) {
+  //Checks if input line has " -i " anywhere
+  public static void checkFlags(String[] input) throws NoSuchElementException{
     for (int i = 1; i < input.length; i++) {
       if (input[i].equals("-i"))
         caseInsensitive = true;
       if (input[i].equals("-p")) {
         usePrefix = true;
         if (i + 1 >= input.length) {
-          System.out.println("A prefix must be specified after the -p flag");
+          throw new NoSuchElementException("A prefix must be provided after the -p flag.");
         }
         else {
           prefix = input[i+1];
@@ -28,7 +29,6 @@ public class WordCount {
   
   public static String removePunctuation(String word) {
     return word.replaceAll("[^a-zA-Z ]", "");
-    //return word.replaceAll("\\p{P}", "");
   }
   
   //Store counts of words in HashMap
